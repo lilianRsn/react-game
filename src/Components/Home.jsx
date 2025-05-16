@@ -46,8 +46,8 @@ export function Home() {
             <div className="btn-container flex flex-col items-center justify-center mt-8">
                 <Link to="/game"
                     className="brutal-shadow p-[15px] text-black hover:text-white bg-[#f6f6f6] hover:bg-[#f72585] 
-                            font-bold transition-colors cursor-pointer border-4 border-[#000] 
-                            drop-shadow-xl w-[10vw] mt-[2vw] no-underline text-center"
+                            font-bold transition-colors  cursor-pointer border-4 border-[#000] 
+                            drop-shadow-xl w-[10vw] mt-[2vw] no-underline text-center active:shadow-none active:!shadow-none active:brutal-shadow:none active:translate-y-2 active:translate-x-2"
                     onMouseEnter={handlePlayButtonHover}
                     onMouseLeave={handlePlayButtonLeave}
                 >
@@ -56,7 +56,7 @@ export function Home() {
                 <button
                     className="brutal-shadow p-[15px] text-black hover:text-white bg-[#f6f6f6] hover:bg-[#f72585] 
                             font-bold transition-colors cursor-pointer border-4 border-[#000] 
-                            drop-shadow-xl w-[10vw] mt-[2vw]"
+                            drop-shadow-xl w-[10vw] mt-[2vw] active:shadow-none active:!shadow-none active:brutal-shadow:none active:translate-y-2 active:translate-x-2"
                     onClick={handleOpenCredits}
                 >
                     Credits

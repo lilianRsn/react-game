@@ -15,7 +15,7 @@
 
 
 body {
-
+position: relative;
   overflow-x: hidden;
   margin: -4vw;
   display: flex;

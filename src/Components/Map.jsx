@@ -4,8 +4,10 @@ import ForestIcon2 from "../assets/icons/tree2.svg";
 import MountainIcon from "../assets/icons/mountain.svg";
 import ShedIcon from "../assets/icons/shed.svg";
 import SurvivorIcon from "../assets/icons/survivor.svg";
+import SunIcon from "../assets/icons/sun.png";
+import SnowIcon from "../assets/icons/hiver.png";
 
-export function GameMap({ wood, setWood, setAvailableSurvivor, setMaxSurvivor, availableSurvivor, maxSurvivor, setIsTimerActive, setMeat }) {
+export function GameMap({ wood, setWood, setAvailableSurvivor, setMaxSurvivor, availableSurvivor, maxSurvivor, setIsTimerActive, setMeat, setShowNotifDeath, showNotifDeath, winterOrSummer, isTimerActive }) {
     // État pour suivre la case sélectionnée (pour afficher le bouton de construction)
     const [selectedCell, setSelectedCell] = useState(null);
 
@@ -179,9 +181,125 @@ export function GameMap({ wood, setWood, setAvailableSurvivor, setMaxSurvivor, a
         }
     };
 
+    // En dehors de tous les hooks
+    let isRemovingSurvivor = false;
+
+    useEffect(() => {
+        // Fonction pour gérer le retrait d'un survivant de la carte
+        const handleRemoveSurvivorFromMap = () => {
+            // Si un processus de suppression est déjà en cours, ignorer
+            if (isRemovingSurvivor) {
+                console.log("Suppression déjà en cours, ignorée");
+                return;
+            }
+            
+            // Activer le verrou
+            isRemovingSurvivor = true;
+            
+            try {
+                // 1. Trouver toutes les cellules avec des survivants
+                const survivorCells = [];
+                
+                grid.forEach((row, rowIndex) => {
+                    row.forEach((cell, colIndex) => {
+                        if (cell.hasSurvivor) {
+                            survivorCells.push({ rowIndex, colIndex });
+                        }
+                    });
+                });
+                
+                // Si aucun survivant n'est sur la carte, on ne fait rien
+                if (survivorCells.length === 0) {
+                    console.log("Aucun survivant à retirer de la carte");
+                    return;
+                }
+                
+                // 2. Choisir une cellule au hasard
+                const randomIndex = Math.floor(Math.random() * survivorCells.length);
+                const targetCell = survivorCells[randomIndex];
+                
+                console.log(`Retrait du survivant à la position [${targetCell.rowIndex}, ${targetCell.colIndex}]`);
+                
+                // 3. Créer une nouvelle grille avec le survivant retiré
+                const newGrid = [...grid];
+                
+                // Détermine si le survivant coupait du bois ou chassait
+                const wasCuttingWood = newGrid[targetCell.rowIndex][targetCell.colIndex].cutWood;
+                const wasHunting = newGrid[targetCell.rowIndex][targetCell.colIndex].huntMeat;
+                
+                // Réinitialise la cellule
+                newGrid[targetCell.rowIndex][targetCell.colIndex] = { 
+                    ...newGrid[targetCell.rowIndex][targetCell.colIndex],
+                    hasSurvivor: false, 
+                    cutWood: false,
+                    huntMeat: false
+                };
+                
+                // 4. Mettre à jour la grille
+                setGrid(newGrid);
+                
+                // 5. Décrémenter le compteur approprié
+                if (wasCuttingWood) {
+                    setSurvivorInForestWood(prev => prev - 1);
+                    console.log("Un bûcheron a été perdu à cause du manque de nourriture");
+                } else if (wasHunting) {
+                    setSurvivorInForestMeat(prev => prev - 1);
+                    console.log("Un chasseur a été perdu à cause du manque de nourriture");
+                }
+                
+                setShowNotifDeath(true);
+                // Ici mettre une notif pour prévnir que le survivant est mort
+                // ///////////////////////
+            } finally {
+                // Désactiver le verrou, que l'opération ait réussi ou non
+                isRemovingSurvivor = false;
+            }
+        };
+        
+        // Ajouter l'écouteur d'événements
+        window.addEventListener('removeSurvivorFromMap', handleRemoveSurvivorFromMap);
+        
+        // Nettoyer l'écouteur lors du démontage du composant
+        return () => {
+            window.removeEventListener('removeSurvivorFromMap', handleRemoveSurvivorFromMap);
+        };
+    }, [grid]); // Dépendances: la grille
+
+    // Timer pour compter le temps de jeu
+    useEffect(() => {
+        const timerNotifDeath = setTimeout(() => {
+            if (showNotifDeath) {
+                setShowNotifDeath(false);
+            }
+        }, 3000);
+        return () => clearTimeout(timerNotifDeath);
+    }, [showNotifDeath]);
+
     return (
         <div className="brutal-shadow p-[15px] bg-[#f6f6f6] text-white font-bold transition-colors border-4 border-[#000] drop-shadow-xl h-full">
-            <h2 className="text-xl font-bold mb-4 text-[#f72585]">Carte</h2>
+            <div className="flex justify-center items-center h-[4vw] relative overflow-hidden">
+                {/* Si winterOrSummer est false (ÉTÉ) */}
+                {winterOrSummer === false && isTimerActive && (
+                    <div className="animate-slide-in-right">
+                        <img 
+                            src={SunIcon} 
+                            alt="Soleil" 
+                            className="w-12 h-12 drop-shadow-[0_0_10px_rgba(255,200,0,0.7)] transform  transition-transform duration-300" 
+                        />
+                    </div>
+                )}
+                
+                {/* Si winterOrSummer est true (HIVER) */}
+                {winterOrSummer === true && isTimerActive && (
+                    <div className="animate-slide-in-right">
+                        <img 
+                            src={SnowIcon} 
+                            alt="Neige" 
+                            className="w-12 h-12 drop-shadow-[0_0_10px_rgba(165,210,255,0.8)] transform transition-transform duration-300" 
+                        />
+                    </div>
+                )}
+            </div>
             {/* Remplacer gap-0 par une solution sans gap */}
             <div className="flex flex-col mx-auto">
                 {grid.map((row, rowIndex) => (

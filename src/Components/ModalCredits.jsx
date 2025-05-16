@@ -37,7 +37,7 @@ export function ModalCredits({handleCloseCredits}) {
                 <p className="mb-4">Graphismes par : REISINHO Lilian</p>
                 
                 <button 
-                    className="brutal-shadow p-[15px] text-black hover:text-white bg-[#f6f6f6] hover:bg-[#f72585] font-bold transition-colors cursor-pointer border-4 border-[#000] drop-shadow-xl w-[10vw] mt-[1vw] mb-[1vw]"
+                    className="brutal-shadow p-[15px] text-black hover:text-white bg-[#f6f6f6] hover:bg-[#f72585] font-bold transition-colors cursor-pointer border-4 border-[#000] drop-shadow-xl w-[10vw] mt-[1vw] mb-[1vw] active:shadow-none active:!shadow-none active:brutal-shadow:none active:translate-y-2 active:translate-x-2"
                     onClick={handleCloseCredits}>
                     Fermer
                 </button>

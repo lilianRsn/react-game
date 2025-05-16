@@ -9,7 +9,7 @@ import '../assets/CSS/Navbar.css';
 
 export function NavBar(props) {
     return (
-        <div className="flex flex-row items-center justify-between w-[85vw] h-[20%] brutal-shadow p-[15px] bg-[#f6f6f6] text-white font-bold transition-colors border-4 border-[#000] drop-shadow-xl gap-6 text-3xl">
+        <div className="flex flex-row items-center justify-between w-[85vw]  brutal-shadow p-[15px] bg-[#f6f6f6] text-white font-bold transition-colors border-4 border-[#000] drop-shadow-xl gap-6 text-3xl">
             <div className="flex flex-row items-center justify-center gap-2" >
                 <div className="flex flex-row items-center justify-between gap-2">
                     <img src={Survivor} alt="Stone logo" className="w-10 h-10 drop-shadow-xl" />
