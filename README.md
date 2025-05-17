@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/b4fa5d2d-61d1-486c-98a7-b27aee6a1905)
+
 # 📖 Description du projet
 Survive React est un jeu de survie avec une esthétique brutaliste où vous devez gérer des ressources et des survivants. Développé dans le cadre de la formation CDA (Concepteur Développeur d'Applications) au CEFIM, ce projet exploite les fonctionnalités avancées de React pour créer une expérience de jeu immersive et responsive.
 
@@ -10,6 +12,9 @@ Gérez votre nourriture avec soin : chaque survivant consomme de la viande toute
 Adaptez votre stratégie aux changements de saisons (été/hiver) qui se produisent toutes les 20 secondes
 Si vous manquez de viande, vos survivants mourront de faim un par un
 Le jeu se termine lorsque tous vos survivants sont morts
+
+![image](https://github.com/user-attachments/assets/10aa9c19-5411-4584-adff-d96b7b9c431d)
+
 
 # 💻 Technologies utilisées
 Frontend
